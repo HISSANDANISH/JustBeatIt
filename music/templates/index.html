@@ -45,8 +45,14 @@
 			<a href="#" class="hr-btn">Help</a>
 			<span>|</span>
 			<div class="user-panel">
-				<a href="{% static '' %}" class="login">Login</a>
-				<a href="{% static '' %}" class="register">Create an account</a>
+				{%  if user.is_authenticated%}
+				<p>Hello, {{user.first_name}}
+					<a href="accounts/logout" class="logout">Logout</a>
+				</p>
+				{% else %}
+				<a href="accounts/login" class="login">Login</a>
+				<a href="accounts/register" class="register">Create an account</a>
+				{% endif %}
 			</div> 
 		</div>
 		<ul class="main-menu">
