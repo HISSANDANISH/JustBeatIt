@@ -13,3 +13,4 @@ Technologies:
 2) Backend -Django Framework
 3)Database- Postgres
 
+The App is Live at justbeat.herokuapp.com
