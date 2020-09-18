@@ -12,5 +12,6 @@ Technologies:
 1) Frontend - HTML5,CSS(Bootstrap + custom CSS),little JS and JQuery
 2) Backend -Django Framework
 3)Database- Postgres
+4)Deployed at heroku
 
-The App is Live at justbeat.herokuapp.com
+The App is Live at https://justbeat.herokuapp.com
