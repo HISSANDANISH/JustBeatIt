@@ -1,0 +1,1 @@
+web: gunicorn justbeatit.wsgi --log-file -
