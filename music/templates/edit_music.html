@@ -1,0 +1,63 @@
+{% extends 'header.html'%}
+{% block content %}
+    <div class="container">
+        <div class='row'>
+            <form class="form-inline my-2 my-lg-0 ml-5" action='edit_music' method='POST'>
+                {%csrf_token%}
+                <input type="text" name="instrument_add" id="instrument_add" placeholder="Add a New Instrument">
+                <button class="btn btn-success my-2 my-sm-0 ml-4" type="submit">Add Instrument</button>
+            </form>
+            <form class="form-inline my-2 my-lg-0 ml-5" action='edit_music' method='POST'>
+                {%csrf_token%}
+                <input type="text" name="music_add" id="music_add" placeholder="Interested Music">
+                <button class="btn btn-success my-2 my-sm-0 ml-4" type="submit">Add Music</button>
+            </form>
+            <form class="form-inline my-2 my-lg-0 ml-5" action='edit_music' method='POST'>
+                {%csrf_token%}
+                <button class="btn btn-success my-2 my-sm-0 ml-4" type="submit">Update Music Profile</button>
+            </form>
+        </div>
+        <div class='table_row'>
+            <div class="card card-signin my-5">
+            <table class='table'>
+                <tr class="table_tr">
+                    <th>Instruments </th>
+                    <th> Action</th>
+                </tr>
+                {% for instrument in request.user.profile.instruments %}
+                <tr class="table_tr">
+                    <td>{{instrument}}</td>
+                    <td>
+                        <form action='edit_music' method='POST'>  
+                            {%csrf_token%}  
+                            <input type="hidden" name="delete_instrument" id="delete_instrument" value={{instrument}}>
+                            <button class="btn" id="instrument_delete" type="submit"> Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            </div>
+            <div class="card card-signin my-5">
+            <table class="table">
+                <tr class="table_tr">
+                    <th>Music </th>
+                    <th> Action</th>
+                </tr>
+                {% for music in request.user.profile.like_music%}
+                <tr class="table_tr">
+                    <td>{{music}}</td>
+                    <td>
+                        <form action='edit_music' method='POST'>
+                            {%csrf_token%}
+                            <input type="hidden" name="delete_music"  id="delete_music" value={{music}}>
+                            <button class="btn" id="music_delete" type="submit"> Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            </div>
+        </div>
+    </div>
+{% endblock%}

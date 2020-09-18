@@ -1,0 +1,72 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+	<title>JustBeatIt</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="SolMusic HTML Template">
+	<meta name="keywords" content="music, html">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!-- Favicon -->
+	<link href="{% static 'img/favicon.ico' %}" rel="shortcut icon"/>
+
+	<!-- Google font -->
+	<link href="{% static 'https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap' %}" rel="stylesheet">
+ 
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}"/>
+
+	<!-- Main Stylesheets -->
+	<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+	{% block css%}
+	{% endblock css%}
+
+</head>
+<body>
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+
+	<!-- Header section -->
+	<header class="header-section clearfix">
+		<a href="{% static 'index.html' %}" class="site-logo">
+			<img src="{% static 'img/logo.png' %}" alt="">
+		</a>
+		<div class="header-right">
+			<div class="user-panel">
+				{%  if user.is_authenticated %}
+					<p>Hello, {{user.first_name}}
+						<a href="{% url 'logout' %}" class="logout">Logout</a>
+					</p>
+				{% else %}
+					<a href="accounts/login" class="login">Login</a>
+					<a href="accounts/register" class="register">Create an account</a>
+				{% endif %}
+			</div> 
+		</div>
+		<ul class="main-menu">
+			{% if user.is_authenticated %}
+				<li><a href='users_list'>Search Musicians</a></li>
+				<li><a href="my_profile">My Profile</a></li>
+				<li><a href="friend_list">My connections</a></li>
+				<li><a href="request_list">My Requests</a></li>
+			{% endif %}
+		</ul>
+    </header>
+    {% block content %}
+    {% endblock %}
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/jquery.slicknav.min.js' %}"></script>
+	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+	<script src="{% static 'js/mixitup.min.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+	{% block script %}
+	{% endblock script %}
+</body>
+</html>

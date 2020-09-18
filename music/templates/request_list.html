@@ -1,0 +1,27 @@
+{% extends 'header.html'%}
+{% block content %}
+    <div class="container">
+        <div class="row">
+        <div class="col-md-8">
+            {% if request_list %}
+            <div class="card card-signin my-5">
+            <div class="card-body">
+            {% for request in request_list %}
+                <a href="{{ request.from_user.get_absolute_url }}"><img src="{{ request.from_user.image.url }}" class="rounded mr-2" width="40" height="40" alt=""></a>
+                <a class="text-dark" href="{{ request.from_user.get_absolute_url }}"><b>{{ request.from_user }}</b></a>
+                <small class="float-right">
+                    <a class='btn btn-primary mr-2' href="{% url 'accept_friend_request' request.from_user.id %}">Accept</a>
+                </small>
+                <small class="float-right">
+                    <a class='btn btn-warning mr-2' href="{% url 'cancel_friend_request' request.from_user.id %}">Cancel Request</a>
+                </small>
+                <br><br>
+            {% endfor %}
+            </div>
+            </div>
+            {% else %}
+            <h5><i>No Requests Till Now!</i></h5>
+            {% endif %}
+    </div>
+
+{% endblock%}

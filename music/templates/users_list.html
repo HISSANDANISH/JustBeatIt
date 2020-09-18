@@ -1,129 +1,137 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="zxx">
-<head>
-	<title>JustBeatIt</title>
-	<meta charset="UTF-8">
-	<meta name="description" content="SolMusic HTML Template">
-	<meta name="keywords" content="music, html">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	<!-- Favicon -->
-	<link href="{% static 'img/favicon.ico' %}" rel="shortcut icon"/>
-
-	<!-- Google font -->
-	<link href="{% static 'https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap' %}" rel="stylesheet">
- 
-	<!-- Stylesheets -->
-	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
-	<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"/>
-	<link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}"/>
-	<link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}"/>
-
-	<!-- Main Stylesheets -->
-	<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
-
-
-	<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
-
-</head>
-<body>
-	<!-- Page Preloder -->
-	<div id="preloder">
-		<div class="loader"></div>
-	</div>
-
-	<!-- Header section -->
-	<header class="header-section clearfix">
-		<a href="{% static 'index.html' %}" class="site-logo">
-			<img src="{% static 'img/logo.png' %}" alt="">
-		</a>
-		<div class="header-right">
-			<a href="#" class="hr-btn">Help</a>
-			<span>|</span>
-			<div class="user-panel">
-				{%  if user.is_authenticated %}
-				<p>Hello, {{user.first_name}}
-					<a href="logout" class="logout">Logout</a>
-				</p>
+{% extends 'header.html'%}
+{% block css%}
+	<style>
+		.dropdown-check-list {
+			align-items: center;
+		}
+		.dropdown-check-list .anchor {
+			position: relative;
+			cursor: pointer;
+			display: inline-block;
+			padding: 5px 50px 5px 10px;
+			border: 1px solid #ccc;
+			}
+		.dropdown-check-list .anchor:after {
+			position: absolute;
+			content: "";
+			border-left: 2px solid black;
+			border-top: 2px solid black;
+			padding: 5px;
+			right: 10px;
+			top: 20%;
+			-moz-transform: rotate(-135deg);
+			-ms-transform: rotate(-135deg);
+			-o-transform: rotate(-135deg);
+			-webkit-transform: rotate(-135deg);
+			transform: rotate(-135deg);
+			}
+		.dropdown-check-list .anchor:active:after {
+			right: 8px;
+			top: 21%;
+			}
+		.dropdown-check-list ul.items {
+			padding: 2px;
+			display: none;
+			margin: 0;
+			border: 1px solid #ccc;
+			border-top: none;
+			}
+		.dropdown-check-list ul.items li {
+			list-style: none;
+			}
+		.dropdown-check-list.visible .anchor {
+			color: #0094ff;
+			}
+		.dropdown-check-list.visible .items {
+			display: block;
+		}
+		.filters{
+		 float: left;
+		 margin-top:20px;
+		}
+		.select_tag{
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+	</style>
+{% endblock css%}
+{% block content%}
+<div class="filters">
+	<form action="users_list" method="GET">
+		<h5>Filter Instruments</h5>
+		<select class="select_tag" name="instrument" id="instrument">
+			{%for key, choice in instruments_choices %}
+				{% if choice == selected_instrument %}
+				<option value ={{choice}} selected>{{choice}}</option>
 				{% else %}
-				<a href="accounts/login" class="login">Login</a>
-				<a href="accounts/register" class="register">Create an account</a>
+				<option  value={{choice}} >{{choice}}</option>
 				{% endif %}
-			</div> 
-		</div>
-		<ul class="main-menu">
-			<li><a href="{% static 'index.html' %}">Home</a></li>
-			<li><a href="{% static '#' %}">Find Musicians</a></li>
-			<li><a href="{% static '#' %}">My Connections</a>
-				<ul class="sub-menu">
-					<li><a href="{% static 'category.html' %}">Category</a></li>
-					<li><a href="{% static 'playlist.html' %}">Playlist</a></li>
-					<li><a href="{% static 'artist.html' %}">Artist</a></li>
-					<li><a href="{% static 'blog.html' %}">Blog</a></li>
-					<li><a href="{% static 'contact.html' %}">Contact</a></li>
-				</ul>
-			</li>
-			<li><a href="{% static 'blog.html' %}">News</a></li>
-			<li><a href="{% static 'contact.html' %}">Contact</a></li>
-		</ul>
-	</header>
-
-    
-
-    <div class="container">
-	    <div class="row">
-	      <div class="col-md-8">
-	      	{% if users %}
-	      	<div class="card card-signin my-5">
-	        <div class="card-body">
-	        {% for user_p in users %}
-	          	<a href="{{ user_p.get_absolute_url }}"><img src="{{ user_p.image.url }}" class="rounded mr-2" width="40" height="40" alt=""></a>
-	          	<a class="text-dark" href="{{ user_p.get_absolute_url }}"><b>{{ user_p }}</b></a>
-	          	{% if not user_p.user in sent %}
-	          	<small class="float-right">
-	                <a class='btn btn-primary mr-2' href="send_friend_request">Add Friend</a>
-	            </small>
-	            {% else %}
-	            <small class="float-right">
-	                <a class='btn btn-warning mr-2' href="cancel_friend_request">Cancel Request</a>
-	            </small>
-	          	{% endif %}
-	          	<br><br>
-	        {% endfor %}
-	    	</div>
-	    	</div>
-	        {% else %}
-	        <h5><i>No new people to add now! Please come back later!</i></h5>
-	        {% endif %}
-	  	   </div>
-	  	   <div class="col-md-4">
-	  	   	<div class="card card-signin my-5">
-	  	   		<a href="{{ request.user.profile.get_absolute_url }}"><img class="card-img-top" src="{{ request.user.profile.image.url }}" alt=""></a>
-	            <div class="card-body">
-	           		<h5 class="card-title text-center">{{ request.user }}</h5>
-	           		<h6 class="text-center">{{ request.user.profile.friends.count }} <p class="text-muted">Friends</p></h6>
-	           		<p class="card-text text-center">{{ request.user.profile.bio }}</p>
-	            </div>
-	       </div>
-	    </div>
+			{% endfor%}
+		</select>
+		<h5>Filter  Music</h5>
+		<select class="select_tag" name="music" id="music">
+			{%for key, choice in music_choices %}
+				{% if choice == selected_music %}
+				<option value ={{choice}} selected>{{choice}}</option>
+				{% else %}
+				<option  value={{choice}} >{{choice}}</option>
+				{% endif %}
+			{% endfor%}
+		</select>
+</div>
+<div class="container">
+	<div class="card-body">
+			<input type="search" id='usearch' name='usearch' placeholder="Search users.." autofocus>
+			<button class="btn btn-success my-2 my-sm-0 ml-4">Search</button>
+		</form>
 	</div>
-
-
-
 	
-	<!-- Footer section end -->
-	
-	<!--====== Javascripts & Jquery ======-->
-	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-	<script src="{% static 'js/bootstrap.min.js' %}"></script>
-	<script src="{% static 'js/jquery.slicknav.min.js' %}"></script>
-	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
-	<script src="{% static 'js/mixitup.min.js' %}"></script>
-	<script src="{% static 'js/main.js' %}"></script>
-
-	</body>
-</html>
+	<div class="row">
+		<div class="col-md-8">
+			{% if users %}
+			<h5><i>Users Found with username '{{usearch}}' Instrument '{{selected_instrument}}' and music '{{selected_music}}'</i></h5>
+			<div class="card card-signin my-5">
+			<div class="card-body">
+				{% for user_p in users %}
+					<a href="{{ user_p.get_absolute_url }}"><img src="{{ user_p.image.url }}" class="rounded mr-2" width="40" height="40" alt=""></a>
+					<a class="text-dark" href="{{ user_p.get_absolute_url }}"><b>{{ user_p.user.username }}</b><small>   {{user_p.instruments}} , {{user_p.like_music}}  </small></a>
+					{% if user_p in request_user_friends %}
+					<small class="float-right">
+						<a class='btn btn-danger float-right' href="{% url 'delete_friend' user_p.user.id %}">Remove Connection</a>
+					</small>
+					{% elif user_p in sent %}
+					<small class="float-right">
+						<a class='btn btn-warning mr-2' href="{% url 'cancel_friend_request' user_p.user.id %}">Cancel Invite</a>
+					</small>
+					{% elif user_p == request_user%}
+					<small class="float-right">
+						<a class='btn btn-warning mr-2' href="my_profile">You</a>
+					</small>
+					{% else %}
+					<small class="float-right">
+						<a class='btn btn-primary mr-2' href="{% url 'send_friend_request' user_p.user.id %}">Invite</a>
+					</small>
+					{% endif %}
+					<br><br>
+				{% endfor %}
+			</div>
+			</div>
+		</div>
+			{% else %}
+				<h5><i>No Users Found with username '{{usearch}}', Instrument '{{selected_instrument}}' and music '{{selected_music}}'</i></h5>
+			{% endif %}
+		<div class="col-md-4">
+			<div class="card card-signin my-5">
+				<a href="{{ request.user.profile.get_absolute_url }}"><img class="card-img-top" src="{{ request.user.profile.image.url }}" alt=""></a>
+			<div class="card-body">
+				<h5 class="card-title text-center">{{ request.user }}</h5>
+				<h6 class="text-center">{{ request.user.profile.friends.count }} <p class="text-muted">Friends</p></h6>
+				<p class="card-text text-center">{{ request.user.profile.bio }}</p>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block script %}
+{% endblock script %}

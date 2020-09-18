@@ -1,0 +1,125 @@
+{% extends "header.html" %}
+{% load static %}
+{% block content %}
+<br><br>
+<div class="main-content">
+<div class="container mt-7">
+    <div class="row">
+    <div class="col-xl-8 m-auto order-xl-2 mb-5 mb-xl-0">
+        <div class="card card-profile shadow">
+        <div class="row justify-content-center">
+            <div class="col-lg-3 order-lg-2">
+            <div class="card-profile-image">
+                <a href="{{ u.profile.image.url }}">
+                <img src="{{ u.profile.image.url }}" class="rounded-circle" width="160px" height="160px">
+                </a>
+            </div>
+            </div>
+        </div>
+        <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+
+        </div>
+        <div class="card-body pt-0 pt-md-4">
+            <div class="row">
+            <div class="col">
+                <div class="card-profile-stats d-flex justify-content-center mt-md-5">
+                <div>
+                    <span class="heading">{{ u.profile.friends.count }}</span>
+                    {% if request.user == u %}
+                    <span class="description"><a href="{% url 'friend_list' %}">Friends</a></span>
+                    {% else%}
+                    <span class="description">Friends</span>
+                    {% endif%}
+                </div>
+                </div>
+            </div>
+            </div>
+            <div class="text-center">
+            <h3>
+                {{ u }}                
+            </h3>   
+            <p>{{ u.profile.bio }}</p>
+            <hr class="my-2">
+            <div><a class='heading'>Skilled Instruments-</a>
+                {% if u.profile.instruments%}
+                    <small><a class='my-2'>{{u.profile.instruments}} </a></small>
+                {% else %}
+                    <small><a class='my-2'>-Add Instruments in music profile-</a></small>
+                {% endif%}
+            </div>
+            <div><a class='heading'>Interested Music-</a> 
+                {% if u.profile.like_music %}
+                    <small><a class='heading'>{{u.profile.like_music}} </a></small>
+                {% else %}
+                    <small><a class='my-2'>-Add Intersed Music in music profile </a></small>
+                {% endif %}
+            </div>               
+            {% if request.user == u %}
+            <a class="btn btn-info" href="{% url 'edit_profile' %}">Edit Profile</a>
+            {% else %}
+                {% if button_status == 'not_connection' %}
+                    <small><a class='btn btn-primary' href="friend_request/send/{{ u.id }}">Add Connection</a></small>
+                {% elif button_status == 'request_sent' %}
+                    <small><a class="btn btn-warning" href="friend_request/cancel/{{ u.id }}">Cancel Invite</a></small>
+                {% else %}
+                    <small><a class="btn btn-danger" href="delete_friend/{{ u.profile.id }}">Remove Connection</a></small>
+                {% endif %}
+            {% endif %}
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    <br>
+    {% if request.user == u %}
+    <div class="row">
+    <div class="col-md-6">
+        <div class="card card-signin my-5">
+            <div class="card-body">
+                <h2>Friend Requests Sent ({{ sent_friend_requests.count }})</h2>
+                <hr class="my-2">
+                {% if not sent_friend_requests %}
+                    <h5><i>No sent requests!</i></h5>
+                {% else %}
+                {% for s_request in sent_friend_requests %}
+        <a href="{{ s_request.to_user.profile.get_absolute_url }}"><img src="{{ s_request.to_user.profile.image.url }}" class="rounded mr-2" width="40" height="40" alt=""></a>
+        <a href="{{ s_request.to_user.profile.get_absolute_url }}"><b>{{ s_request.to_user.username }}</b></a> 
+        <small class="float-right">
+            <a class='btn btn-warning mr-2' href="{% url 'cancel_friend_request' s_request.to_user.id %}">Cancel Invite</a>
+        </small>
+        <br><br>  
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-signin my-5">
+            <div class="card-body">
+                <h2>Friend Requests Recieved ({{ rec_friend_requests.count }})</h2>
+                <hr class="my-2">
+                {% if not rec_friend_requests %}
+                    <h5><i>No recieved requests!</i></h5>
+                {% else %}
+                    {% for r_request in rec_friend_requests %}
+            <a href="{{ r_request.from_user.profile.get_absolute_url }}"><img src="{{ r_request.from_user.profile.image.url }}" class="rounded mr-2" width="40" height="40" alt=""></a>
+            <a class="mr-2 align-middle" href="{{ r_request.from_user.profile.get_absolute_url }}"><b>{{ r_request.from_user.username }}</b>
+            </a>
+            <small class="float-right">
+                <a class='btn btn-success mr-2' href="friend_request/accept/{{ r_request.from_user.id }}">Accept Connection</a>
+                <a class='btn btn-danger' href="friend_request/cancel/{{ r_request.from_user.id }}">Reject Connection</a>
+            </small>
+        <br><br>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    </div>
+    {% endif %}
+</div>
+</div>
+
+
+
+{% endblock content %}

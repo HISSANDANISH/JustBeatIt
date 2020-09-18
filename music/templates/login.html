@@ -9,7 +9,13 @@
 
     <!-- Font Icon -->
     <link rel="stylesheet" href="{% static 'fonts_register/material-icon/css/material-design-iconic-font.min.css' %}">
-
+    <style>
+        .message{
+            text-align: center;
+            color: red;
+            font-size: 24px;
+        }
+    </style>
     <!-- Main css -->
     <link rel="stylesheet" href="{% static 'css_register/style.css' %}">
 </head>
@@ -18,7 +24,7 @@
         
         <div>
             {% for message in messages %}
-                <h3> {{message}}</h3>
+                <h2 class="message"> {{message}}</h2>
             {% endfor %}
         </div>
 
@@ -29,7 +35,11 @@
                         <figure><img src="{% static 'images_register/signin-image.jpg' %}" alt="sing up image"></figure>
                         <a href="register" class="signup-image-link">Create an account</a>
                     </div>
-
+                    <form action="{% url 'index'%}" method="GET">
+                        <div class="form-group form-button">
+                            <input type="submit" name="Home"  class="form-submit" value="Home"/>
+                        </div>
+                    </form>
                     <div class="signin-form">
                         <h2 class="form-title">Log In</h2>
                         <form action="login" method="POST" class="register-form" id="login-form">
@@ -44,7 +54,6 @@
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
-                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
                             </div>
                             <div class="form-group form-button">
                                 <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
@@ -53,9 +62,9 @@
                         <div class="social-login">
                             <span class="social-label">Or login with</span>
                             <ul class="socials">
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                                <li><a href="https://www.facebook.com/"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                <li><a href="https://www.twitter.com/"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                                <li><a href="https://www.google.com/"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
                             </ul>
                         </div>
                     </div>
